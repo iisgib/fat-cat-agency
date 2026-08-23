@@ -350,15 +350,35 @@
   .modal-gallery-title{ font-family:var(--font-display); font-weight:700; font-size:16px; margin-bottom:4px; }
   .modal-gallery-meta{ color:var(--paper-dim); font-size:13px; margin-bottom:16px; }
   .modal-gallery-grid{ display:grid; grid-template-columns:repeat(2, 1fr); gap:8px; }
-  .modal-gallery-grid a{
+  .modal-gallery-grid button{
     display:flex; align-items:center; justify-content:center;
     border-radius:4px; overflow:hidden; aspect-ratio:4/3; background:var(--ink);
+    border:0; padding:0; cursor:pointer; appearance:none;
   }
   .modal-gallery-grid img{
     width:100%; height:100%; object-fit:contain; display:block;
-    transition:transform .3s ease;
+    transition:transform .3s ease; pointer-events:none;
   }
-  .modal-gallery-grid a:hover img{ transform:scale(1.06); }
+  .modal-gallery-grid button:hover img{ transform:scale(1.06); }
+
+  /* ---------- Lightbox ---------- */
+  .lightbox{
+    position:fixed; inset:0; z-index:130;
+    background:rgba(4,4,3,.94);
+    display:flex; align-items:center; justify-content:center;
+    padding:32px;
+    opacity:0; visibility:hidden;
+    transition:opacity .25s ease, visibility 0s linear .25s;
+  }
+  .lightbox.is-open{ opacity:1; visibility:visible; transition:opacity .25s ease, visibility 0s; }
+  .lightbox img{ max-width:100%; max-height:100%; object-fit:contain; border-radius:4px; }
+  .lightbox-close{
+    position:absolute; top:20px; right:20px; width:44px; height:44px;
+    border:1px solid var(--line); background:var(--ink); color:var(--paper);
+    border-radius:50%; cursor:pointer; font-size:20px; line-height:1;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .lightbox-close:hover{ border-color:var(--paper); }
 
   /* ---------- Contact ---------- */
   .contact-grid{
@@ -603,6 +623,11 @@
   </div>
 </div>
 
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Close">&times;</button>
+  <img id="lightbox-img" src="" alt="">
+</div>
+
 <script>
 (function(){
   "use strict";
@@ -727,7 +752,32 @@
   document.getElementById("modal").addEventListener("click", function(e){
     if(e.target.id === "modal") closeModal();
   });
-  document.addEventListener("keydown", function(e){ if(e.key === "Escape") closeModal(); });
+
+  function openLightbox(src, alt){
+    var lb = document.getElementById("lightbox");
+    var img = document.getElementById("lightbox-img");
+    img.src = src;
+    img.alt = alt || "";
+    lb.classList.add("is-open");
+    lb.setAttribute("aria-hidden","false");
+  }
+  function closeLightbox(){
+    var lb = document.getElementById("lightbox");
+    lb.classList.remove("is-open");
+    lb.setAttribute("aria-hidden","true");
+  }
+  document.getElementById("lightbox-close").addEventListener("click", closeLightbox);
+  document.getElementById("lightbox").addEventListener("click", function(e){
+    if(e.target.id === "lightbox") closeLightbox();
+  });
+
+  document.addEventListener("keydown", function(e){
+    if(e.key === "Escape"){
+      var lb = document.getElementById("lightbox");
+      if(lb.classList.contains("is-open")) closeLightbox();
+      else closeModal();
+    }
+  });
 
   function buildServices(lang){
     var host = document.getElementById("services-grid");
@@ -756,8 +806,8 @@
             + '<p class="modal-gallery-title">'+csTitle+'</p>'
             + '<p class="modal-gallery-meta">'+csMeta+'</p>'
             + '<div class="modal-gallery-grid">'
-            + cs.images.map(function(src){
-                return '<a href="'+src+'" target="_blank" rel="noopener"><img src="'+src+'" alt="'+csTitle+'" loading="lazy"></a>';
+            + cs.images.map(function(src, j){
+                return '<button type="button" data-idx="'+j+'"><img src="'+src+'" alt="'+csTitle+'" loading="lazy"></button>';
               }).join("")
             + '</div></div>';
         }
@@ -765,6 +815,14 @@
         openModal(html);
         var link = document.querySelector(".modal-cta");
         if(link){ link.addEventListener("click", closeModal); }
+        if(cs){
+          document.querySelectorAll(".modal-gallery-grid button").forEach(function(btn){
+            btn.addEventListener("click", function(){
+              var j = parseInt(btn.getAttribute("data-idx"),10);
+              openLightbox(cs.images[j], (cs.title[lang] || cs.title.en));
+            });
+          });
+        }
       });
     });
   }
