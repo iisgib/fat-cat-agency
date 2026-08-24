@@ -291,10 +291,7 @@
   .logo-tile{
     background:var(--paper); border-radius:5px; aspect-ratio:1/1;
     display:flex; align-items:center; justify-content:center; padding:16px;
-    cursor:pointer; border:0; appearance:none;
-    transition:transform .2s ease, box-shadow .2s ease;
   }
-  .logo-tile:hover, .logo-tile:focus-visible{ transform:translateY(-3px); box-shadow:0 14px 28px rgba(0,0,0,.4); }
   .logo-tile img{ max-width:100%; max-height:100%; object-fit:contain; }
 
   /* ---------- Modal ---------- */
@@ -544,7 +541,7 @@
           <span class="eyebrow" data-i18n="workwith.eyebrow">Our network</span>
           <h2 class="section-title" data-i18n="workwith.heading">Who We Work With</h2>
         </div>
-        <p class="section-note" data-i18n="workwith.note">International brands and Latvian names we've partnered with — tap a logo to learn more.</p>
+        <p class="section-note" data-i18n="workwith.note">International brands and Latvian names we've partnered with.</p>
       </div>
       <div class="logo-grid" id="logo-grid"><!-- injected by JS --></div>
     </div>
@@ -643,7 +640,7 @@
       "services.eyebrow":"What we do","services.heading":"Services",
       "services.note":"From a single poster to a finished building — one studio, one point of contact, start to finish.",
       "workwith.eyebrow":"Our network","workwith.heading":"Who We Work With",
-      "workwith.note":"International brands and Latvian names we've partnered with — tap a logo to learn more.",
+      "workwith.note":"International brands and Latvian names we've partnered with.",
       "modal.brandText":"One of the brands Fat Cat has proudly collaborated with.",
       "modal.igCta":"See more on Instagram",
       "modal.projectCta":"Start a project",
@@ -668,7 +665,7 @@
       "services.eyebrow":"Чем мы занимаемся","services.heading":"Услуги",
       "services.note":"От одного постера до готового здания — одна студия, один контакт, полный цикл.",
       "workwith.eyebrow":"Наша сеть","workwith.heading":"С кем мы работаем",
-      "workwith.note":"Международные бренды и латвийские компании, с которыми мы сотрудничали — нажмите на логотип, чтобы узнать больше.",
+      "workwith.note":"Международные бренды и латвийские компании, с которыми мы сотрудничали.",
       "modal.brandText":"Один из брендов, с которым Fat Cat с гордостью сотрудничает.",
       "modal.igCta":"Больше в Instagram",
       "modal.projectCta":"Начать проект",
@@ -693,7 +690,7 @@
       "services.eyebrow":"Ko mēs darām","services.heading":"Pakalpojumi",
       "services.note":"No viena plakāta līdz pabeigtai ēkai — viena studija, viens kontaktpunkts, viss process.",
       "workwith.eyebrow":"Mūsu tīkls","workwith.heading":"Ar ko mēs strādājam",
-      "workwith.note":"Starptautiski zīmoli un Latvijas uzņēmumi, ar kuriem esam sadarbojušies — pieskarieties logotipam, lai uzzinātu vairāk.",
+      "workwith.note":"Starptautiski zīmoli un Latvijas uzņēmumi, ar kuriem esam sadarbojušies.",
       "modal.brandText":"Viens no zīmoliem, ar kuriem Fat Cat lepni sadarbojas.",
       "modal.igCta":"Vairāk Instagram",
       "modal.projectCta":"Sākt projektu",
@@ -826,21 +823,9 @@
 
   function buildLogos(lang){
     var host = document.getElementById("logo-grid");
-    var dict = translations[lang] || translations.en;
-    host.innerHTML = clientLogos.map(function(c, i){
-      return '<button type="button" class="logo-tile" data-i="'+i+'" aria-label="'+c.name+'"><img src="'+c.src+'" alt="'+c.name+'" loading="lazy"></button>';
+    host.innerHTML = clientLogos.map(function(c){
+      return '<div class="logo-tile"><img src="'+c.src+'" alt="'+c.name+'" loading="lazy"></div>';
     }).join("");
-    host.querySelectorAll(".logo-tile").forEach(function(tile){
-      tile.addEventListener("click", function(){
-        var i = parseInt(tile.getAttribute("data-i"),10);
-        var c = clientLogos[i];
-        var html = '<div class="modal-logo-wrap"><img src="'+c.src+'" alt="'+c.name+'"></div>'
-          + '<h3 class="modal-title" id="modal-title">'+c.name+'</h3>'
-          + '<p class="modal-text">'+dict["modal.brandText"]+'</p>'
-          + '<a class="btn btn-outline modal-cta" href="https://instagram.com/fat_cat_creative_agency" target="_blank" rel="noopener">'+dict["modal.igCta"]+'</a>';
-        openModal(html);
-      });
-    });
   }
 
   function applyLang(lang){
