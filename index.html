@@ -1135,10 +1135,10 @@
       var p = points[i];
       var age = (now - p.t) / 900;
       var alpha = Math.max(0, 1 - age);
-      var r = 2 + (1-age) * 3.2;
+      var r = 2.5 + (1-age) * 4.2;
       ctx.beginPath();
       ctx.arc(p.x, p.y, r, 0, Math.PI*2);
-      ctx.fillStyle = "rgba(245,243,238," + (alpha*0.55) + ")";
+      ctx.fillStyle = "rgba(245,243,238," + (alpha*0.85) + ")";
       ctx.fill();
     }
 
@@ -1146,23 +1146,23 @@
       ctx.beginPath();
       ctx.moveTo(points[0].x, points[0].y);
       for(var j=1;j<points.length;j++){ ctx.lineTo(points[j].x, points[j].y); }
-      ctx.strokeStyle = "rgba(245,243,238,0.22)";
-      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(245,243,238,0.4)";
+      ctx.lineWidth = 1.4;
       ctx.stroke();
     }
 
     var head = points[points.length-1];
     if(head){
-      var glow = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, 46);
-      glow.addColorStop(0, "rgba(245,243,238,0.35)");
+      var glow = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, 70);
+      glow.addColorStop(0, "rgba(245,243,238,0.55)");
       glow.addColorStop(1, "rgba(245,243,238,0)");
       ctx.beginPath();
       ctx.fillStyle = glow;
-      ctx.arc(head.x, head.y, 46, 0, Math.PI*2);
+      ctx.arc(head.x, head.y, 70, 0, Math.PI*2);
       ctx.fill();
 
       ctx.beginPath();
-      ctx.arc(head.x, head.y, 4.5, 0, Math.PI*2);
+      ctx.arc(head.x, head.y, 6, 0, Math.PI*2);
       ctx.fillStyle = "#f5f3ee";
       ctx.fill();
     }
