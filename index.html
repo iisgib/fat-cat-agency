@@ -430,11 +430,10 @@
   }
   .ig-card:hover{ border-color:var(--paper); transform:translateY(-2px); }
   .ig-card-main{ display:flex; align-items:center; gap:14px; }
-  .ig-card .ig-icon{ width:26px; height:26px; }
+  .ig-card .ig-icon{ width:30px; height:30px; transition:transform .25s ease; }
   .ig-card .ig-label{ font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--paper-dim2); display:block; margin-bottom:6px; }
   .ig-card .ig-handle{ font-family:var(--font-display); font-weight:700; font-size:18px; }
-  .ig-arrow{ font-size:20px; transition:transform .25s ease; }
-  .ig-card:hover .ig-arrow{ transform:translate(4px,-4px); }
+  .ig-card:hover .ig-icon{ transform:scale(1.1); }
 
   .field{ margin-bottom:20px; }
   .field label{
@@ -643,13 +642,12 @@
         <p class="contact-sub" data-i18n="contact.sub">Tell us about it — architecture, interiors, a campaign, or an event. We'll get back to you shortly.</p>
         <a class="ig-card" href="https://instagram.com/fat_cat_creative_agency" target="_blank" rel="noopener">
           <span class="ig-card-main">
-            <span class="ig-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></span>
             <span>
               <span class="ig-label" data-i18n="contact.igLabel">Instagram</span>
               <span class="ig-handle">@fat_cat_creative_agency</span>
             </span>
           </span>
-          <span class="ig-arrow" aria-hidden="true">↗</span>
+          <span class="ig-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"/></svg></span>
         </a>
       </div>
       <form id="contact-form" novalidate>
